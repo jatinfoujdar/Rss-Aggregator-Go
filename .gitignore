@@ -1,3 +1,48 @@
 .vscode/
 Rss-Aggregator-Go
 .env
+
+# Binaries for programs and plugins
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+
+# Output of go build
+*.out
+
+# Go workspaces (Go 1.18+)
+go.work
+go.work.sum
+
+# Vendor directory (if you're not committing vendor dependencies)
+vendor/
+
+# Test result files
+*.cover
+*.coverprofile
+
+# IDE/editor config files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Dependency caches (if used)
+**/node_modules/
+**/.npm/
+**/.cache/
+
+# Build output directories
+bin/
+build/
+dist/

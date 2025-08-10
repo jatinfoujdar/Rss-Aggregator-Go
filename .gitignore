@@ -1,6 +1,7 @@
 .vscode/
 Rss-Aggregator-Go
 .env
+thunder-tests
 
 # Binaries for programs and plugins
 *.exe

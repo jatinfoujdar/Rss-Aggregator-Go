@@ -9,7 +9,15 @@ import (
     "github.com/go-chi/cors"
     "github.com/go-chi/chi/v5"
     "github.com/joho/godotenv"
+    "database/sql"
+    "github.com/jatinfoujdar/Rss-Aggregator-Go/internal/database"
+
+    _ "github.com/lib/pq"
 )
+
+type apiConfig struct {
+    DB *database.Queries
+}
 
 func main() {
     
@@ -19,6 +27,21 @@ func main() {
     if portString == ""{
         log.Fatal("PORT environment variable is not set")
     }
+
+    dbURL := os.Getenv("DB_URL") 
+    if  dbURL == ""{
+        log.Fatal(" dbURL environment variable is not set")
+    }
+
+    conn, err := sql.Open("postgres", dbURL)
+     if err != nil {
+        log.Fatal("Failed to connect to database: ", err)
+     }
+     
+   
+     apiConfig := apiConfig{
+        DB: database.New(conn),
+     }
 
        router := chi.NewRouter()
         
@@ -45,7 +68,7 @@ func main() {
         }
 
         log.Printf("Starting server on port %s\n", portString)
-        err := srv.ListenAndServe() 
+        err = srv.ListenAndServe()
          if err != nil {
          log.Fatal("Failed to start server: ", err)
      }

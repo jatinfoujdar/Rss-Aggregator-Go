@@ -1,9 +1,7 @@
--- name: CreateUser :one
-INSERT INTO users (id, created_at, updated_at, name, api_key)
-VALUES ($1, $2, $3, $4, 
-encode(sha256(random()::text::bytea), 'hex')
-)
-RETURNING *;
+-- +goose Up
+ALTER TABLE users ADD COLUMN api_key VARCHAR(64) UNIQUE NOT NULL DEFAULT (
+    encode(sha256(random()::text::bytea), 'hex')
+);
 
--- name: GetUserByAPIKey :one
-SELECT * FROM users WHERE api_key = $1;
+-- +goose Down
+ALTER TABLE users DROP COLUMN api_key;

@@ -5,7 +5,7 @@ import (
     "fmt"
     "net/http"
     "time"
-    // "github.com/jatinfoujdar/Rss-Aggregator-Go/internal/auth"
+    "github.com/jatinfoujdar/Rss-Aggregator-Go/internal/auth"
 
     "github.com/google/uuid"
     "github.com/jatinfoujdar/Rss-Aggregator-Go/internal/database"
@@ -37,18 +37,18 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
     respondWithJson(w, 201, databaseUserToUser(user))
 }
 
-// func (apiCfg *apiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request) {
-//     apiKey, err := auth.GetAPIKey(r.Header)
-//     if err != nil {
-//         respondWithError(w, http.StatusForbidden, fmt.Sprintf("Error getting API key: %v", err))
-//         return
-//     }
+func (apiCfg *apiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request) {
+    apiKey, err := auth.GetAPIKey(r.Header)
+    if err != nil {
+        respondWithError(w, http.StatusForbidden, fmt.Sprintf("Error getting API key: %v", err))
+        return
+    }
 
-//     user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
-//     if err != nil {
-//         respondWithError(w, http.StatusNotFound, fmt.Sprintf("User not found: %v", err))
-//         return
-//     }
+    user, err := apiCfg.DB.GetUserByAPIKey(r.Context(), apiKey)
+    if err != nil {
+        respondWithError(w, http.StatusNotFound, fmt.Sprintf("User not found: %v", err))
+        return
+    }
 
-//     respondWithJson(w, http.StatusOK, user)
-// }
+    respondWithJson(w, http.StatusOK, user)
+}

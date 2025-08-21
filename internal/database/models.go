@@ -11,8 +11,9 @@ import (
 )
 
 type User struct {
-	ID        uuid.UUID 
+	ID        uuid.UUID
 	CreatedAt time.Time
 	UpdatedAt time.Time
 	Name      string
+	ApiKey    string
 }

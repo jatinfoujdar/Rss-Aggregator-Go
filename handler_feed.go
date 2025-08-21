@@ -11,9 +11,10 @@ import (
     "github.com/jatinfoujdar/Rss-Aggregator-Go/internal/database"
 )
 
-func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Request) {
+func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Request, user database.User) {
     type parameters struct {
         Name string `json:"name"`
+        URL string `json:"url"`
     }
     decoder := json.NewDecoder(r.Body)
     params := parameters{}
@@ -23,23 +24,21 @@ func (apiCfg *apiConfig) handlerCreateUser(w http.ResponseWriter, r *http.Reques
         return
     }
 
-    user, err := apiCfg.DB.CreateUser(r.Context(), database.CreateUserParams{
+    feed, err := apiCfg.DB.CreateFeed(r.Context(), database.CreateFeedParams{
         ID:        uuid.New(),
         CreatedAt: time.Now().UTC(),
         UpdatedAt: time.Now().UTC(),
         Name:      params.Name,
+        Url:       params.URL,
+        UserID:    user.ID,
     })
     if err != nil {
-        respondWithError(w, 400, fmt.Sprintf("Couldn't create user: %v", err))
+        respondWithError(w, 400, fmt.Sprintf("Couldn't create feed: %v", err))
         return
     }
 
-    respondWithJson(w, 201, databaseUserToUser(user))
+    respondWithJson(w, 201, DatabaseFeedToFeed(feed))
 }
 
-func (apiCfg *apiConfig) HandlerGetUser(w http.ResponseWriter, r *http.Request, user database.User) {
-
-    respondWithJson(w, http.StatusOK, user)
-}
 
 

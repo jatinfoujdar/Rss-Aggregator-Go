@@ -23,20 +23,19 @@ func (apiCfg *apiConfig) handlerCreateFeedFollow(w http.ResponseWriter, r *http.
         return
     }
 
-    feed, err := apiCfg.DB.CreateFeed(r.Context(), database.CreateFeedParams{
+    feedFollow, err := apiCfg.DB.CreateFeedFollow(r.Context(), database.CreateFeedFollowParams{
         ID:        uuid.New(),
         CreatedAt: time.Now().UTC(),
         UpdatedAt: time.Now().UTC(),
-        Name:      params.Name,
-        Url:       params.URL,
         UserID:    user.ID,
+        FeedID:   params.FeedId,
     })
     if err != nil {
-        respondWithError(w, 400, fmt.Sprintf("Couldn't create feed: %v", err))
+        respondWithError(w, 400, fmt.Sprintf("Couldn't create feed follow: %v", err))
         return
     }
 
-    respondWithJson(w, 201, DatabaseFeedToFeed(feed))
+    respondWithJson(w, 201, DatabaseFeedFollowToFeedFollow(feedFollow))
 }
 
 
